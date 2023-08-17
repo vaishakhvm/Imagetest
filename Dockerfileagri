@@ -1,0 +1,18 @@
+FROM golang:1.20.5
+RUN apt-get update
+RUN apt-get -f install
+RUN apt-get install -y ca-certificates
+RUN apt-get update && apt-get install -y wkhtmltopdf
+RUN apt install binutils
+RUN strip --remove-section=.note.ABI-tag /usr/lib/x86_64-linux-gnu/libQt5Core.so.5
+ENV WKHTMLTOPDF_PATH=/usr/bin/wkhtmltopdf
+ADD ProjectHaystack/assets /krypc/krypcore/assets
+ADD krypcore/krypcore/assets /krypc/krypcore/krypcore/assets
+ADD krypcore/apiDoc/assets  /krypc/krypcore/apiDoc/assets
+ADD ProjectHaystack/common/webCommonHandler/assets /krypc/krypcore/common/webCommonHandler/assets
+ADD krypcore/explorer/assets /krypc/krypcore/explorer/assets
+ADD krypcore/basemsp/assets /krypc/krypcore/basemsp/assets
+ADD ProjectHaystack/main/main /krypc/krypcore
+RUN export GODEBUG=x509ignoreCN=0
+WORKDIR /krypc/krypcore
+RUN ls
